@@ -2,11 +2,11 @@ import mongoose,{Schema} from "mongoose";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
-const userScreen = new Schema(
+const userSchema = new Schema(
     {
         username:{
             type: String,
-            requrired: true,
+            required: true,
             unique: true,
             lowercase: true,
             trim: true,
@@ -15,20 +15,20 @@ const userScreen = new Schema(
         },
         email: {
             type: String,
-            requrired: true,
+            required: true,
             unique: true,
             lowercase: true,
             trim: true,
         },
         fullname:{
             type: String,
-            requrired: true,   
+            required: true,   
             trim: true,
             
         },
         avatar: {
             type: String, //cloudinary url
-            requrired: true,
+            required: true,
 
         },
         coverImage: {
@@ -68,16 +68,16 @@ userSchema.methods.isPasswordCorrect = async function(password){
 }
 
 userSchema.methods.generateAccessToken = function(){
-    return.jwt.sign(
+    return jwt.sign(
         {
             _id: this._id,
             email: this.email,
             username: this.username,
             fullname: this.fullname
         },
-        process.env.ACCESS_TOKEN_SECRET
+        process.env.ACCESS_TOKEN_SECRET,
         {
-            process.env.ACCESS_TOKEN_EXPIRY
+           expiresIn: process.env.ACCESS_TOKEN_EXPIRY
         }
     )
 }

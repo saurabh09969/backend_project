@@ -1,0 +1,1 @@
+ const {fullnNmae, email, username, password } = req.body
